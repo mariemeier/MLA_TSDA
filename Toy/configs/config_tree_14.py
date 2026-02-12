@@ -51,15 +51,15 @@ percentage = '_' + str(opt.trim_percentage)
 opt.outf_path = opt.outf + "/" + exp_id + spiral + percentage
 opt.outr_path = opt.outr + '/' + exp_id + spiral + percentage
 
-opt.use_visdom = False
+opt.use_visdom = True
 opt.visdom_port = 2000
 
 opt.use_g_encode = False # False  # True
 if opt.use_g_encode:
     opt.g_encode = read_pickle("g_encode_l7l40.pkl")
 
-
-opt.device = "cuda"
+import torch
+opt.device = "mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu"
 opt.seed = 2333  # 1# 101 # 1 # 233 # 1
 
 # opt.lambda_gan = 1  # 0.5 # 0.3125 # 0.5 # 0.5

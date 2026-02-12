@@ -25,7 +25,18 @@ def to_np(x):
     return x.detach().cpu().numpy()
 
 
-def to_tensor(x, device="cuda"):
+# def to_tensor(x, device="mps"):
+#     if isinstance(x, np.ndarray):
+#         if x.dtype == np.float64:
+#             x = x.astype(np.float32)
+#         x = torch.from_numpy(x).to(device)
+#     else:
+#         if x.dtype == torch.float64:
+#             x = x.float()
+#         x = x.to(device)
+#     return x
+
+def to_tensor(x, device="mps"):
     if isinstance(x, np.ndarray):
         x = torch.from_numpy(x).to(device)
     else:
@@ -342,7 +353,9 @@ class BaseModel(nn.Module):
 
         for i in range(nd):
             for j in range(i + 1, nd):
-                label = torch.tensor(self.opt.A[i][j]).to(self.device)
+                label = torch.tensor(self.opt.A[i][j], dtype=torch.float32).to(self.device) if self.device.type == 'mps' else torch.tensor(self.opt.A[i][j]).to(self.device)
+                #label = torch.tensor(self.opt.A[i][j], dtype=torch.float32).to(self.device)
+                #label = torch.tensor(self.opt.A[i][j]).to(self.device)
                 output = ((
                     self.z_seq[i * self.tmp_batch_size]
                     * self.z_seq[j * self.tmp_batch_size]

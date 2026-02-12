@@ -26,7 +26,7 @@ def to_np(x):
     return x.detach().cpu().numpy()
 
 
-def to_tensor(x, device="cuda"):
+def to_tensor(x, device="mps"):
     if isinstance(x, np.ndarray):
         x = torch.from_numpy(x).to(device)
     else:
@@ -324,7 +324,9 @@ class BaseModel(nn.Module):
             v_i = sub_graph[i]
             for j in range(i + 1, sample_v):
                 v_j = sub_graph[j]
-                label = torch.tensor(self.opt.A[v_i][v_j]).to(self.device)
+                label = torch.tensor(self.opt.A[i][j], dtype=torch.float32).to(self.device) if self.device.type == 'mps' else torch.tensor(self.opt.A[i][j]).to(self.device)
+                #label = torch.tensor(self.opt.A[i][j], dtype=torch.float32).to(self.device)
+                #label = torch.tensor(self.opt.A[v_i][v_j]).to(self.device)
                 output = (
                         self.z_seq[v_i * self.tmp_batch_size]
                         * self.z_seq[v_j * self.tmp_batch_size]
@@ -342,7 +344,9 @@ class BaseModel(nn.Module):
 
         for i in range(nd):
             for j in range(i + 1, nd):
-                label = torch.tensor(self.opt.A[i][j]).to(self.device)
+                label = torch.tensor(self.opt.A[i][j], dtype=torch.float32).to(self.device) if self.device.type == 'mps' else torch.tensor(self.opt.A[i][j]).to(self.device)
+                #label = torch.tensor(self.opt.A[i][j], dtype=torch.float32).to(self.device)
+                #label = torch.tensor(self.opt.A[i][j]).to(self.device)
                 output = ((
                                   self.z_seq[i * self.tmp_batch_size]
                                   * self.z_seq[j * self.tmp_batch_size]
