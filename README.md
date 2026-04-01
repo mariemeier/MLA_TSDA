@@ -1,4 +1,9 @@
 # Taxonomy-Structured Domain Adaptation (TSDA)
+# 🔬 Reproduction Project & Robustness Study
+
+> **Note:** This repository is a reproduction and audit work of the ICML 2023 paper cited below for the Advanced Machine Learning course followed at AgroParisTech x Paris-Saclay University. As part of this project, I evaluated the robustness of the original results and the technical reproducibility of the codebase. The findings of this study, including performance analyses and observed discrepancies, have been compiled into a dedicated reproduction paper.
+
+
 This repo contains the code for our ICML 2023 paper:<br>
 **Taxonomy-Structured Domain Adaptation**<br>
 Tianyi Liu*, Zihao Xu*, Hao He, Guang-Yuan Hao, Guang-He Lee, Hao Wang<br>
